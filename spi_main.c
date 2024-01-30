@@ -315,7 +315,7 @@ int spi_main()
                     {
                        if  (final_forward_power == final_forward_power + 1)
                        {
-                        final_forward_power =final_forward_power - 1;
+                        final_forward_power =final_forward_power - 1; //cancels 1 bit noise from ADC data
                        }
                         printf("filtering noise\n");
                     }
