@@ -135,13 +135,14 @@ uint16_t avg_value(int EMB_spi_fd,int flag)
     if (flag)
     {
         PG10_EMB_read_register(EMB_spi_fd, 0x08, 2, 1, spi4_trx);
-        for (int i=0;i<10;i++)
+        for (int i=0;i<5;i++)
         {
             uint16_t value = PG10_EMB_read_register(EMB_spi_fd, 0x08, 2, 1, spi4_trx); 
+            usleep(50);
             // printf("Forward power in channel-2(RAW) : %d\n", value);      
             temp = temp+value;
         }   
-        data = (uint16_t)temp/10;
+        data = (uint16_t)temp/5;
         // printf("Forward power in channel-2(RAW)(Avg) : %d\n", data);
         return data;
     }
@@ -149,13 +150,14 @@ uint16_t avg_value(int EMB_spi_fd,int flag)
     {
         temp=0;
         PG10_EMB_read_register(EMB_spi_fd, 0x00, 1, 1, spi4_trx);
-        for (int i=0;i<10;i++)
+        for (int i=0;i<5;i++)
         {
             uint16_t value_1 = PG10_EMB_read_register(EMB_spi_fd, 0x00, 1, 1, spi4_trx);
+            usleep(50);
             // printf("Reflected power in channel-1(RAW): %d\n", value_1);        
             temp = temp+value_1;
         }
-        data = (uint16_t)temp/10;
+        data = (uint16_t)temp/5;
         // printf("Reflected power in channel-1(RAW)(AVG): %d\n", data);
         return data;
     }
