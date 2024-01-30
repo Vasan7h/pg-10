@@ -39,8 +39,8 @@ int adc_nc_flag;                          // flag to check 4 counts in stable lo
 double osci_fix = 0;                      // for stabilizing the pow_set_ptput
 int pow_set_pt;                           // set point (RF input)
 double final_forward_power_pps_dac_value; // forw power within PID control
-double final_forward_power;               // forw power inside PID when stable o/p
-double Prev_final_forward_power = 0;      // to store previous forward power
+uint8_t final_forward_power;               // forw power inside PID when stable o/p
+uint8_t Prev_final_forward_power = 0;      // to store previous forward power
 double t_pps_dac_value = 0;               // 10% of max DAC value (actual 255) , limited for 600W
 double I_pe = 0;                          // previous error_cal
 double D_pe = 0;                          // previous error_cal
@@ -74,7 +74,7 @@ int DAC_forw_ref_pow_spi_fd = 0;
 int interlock = 0;
 int rf_control = 0;
 uint16_t data = 0;
-double final_reflected_power = 0;
+uint8_t final_reflected_power = 0;
 double reflected_power = 0;
 int8_t condition_check = 0;
 double load_power = 0;
@@ -125,7 +125,7 @@ int spi_main()
                 }
                 power_set_point();
                 printf("Setting %d Watt\n", pow_set_pt);
-                printf("forw pow in check:    %lf W \n", final_forward_power);
+                printf("forw pow in check:    %d W \n", final_forward_power);
                 error_cal = (pow_set_pt - final_forward_power);
                 printf("Err: %lf\n", error_cal);
 
@@ -220,13 +220,13 @@ int spi_main()
                         final_forward_power = (Prev_final_forward_power + final_forward_power) / 2;
                         printf("filtering noise\n");
                     }
-                    printf("forw pow after noise fixing:    %lf W \n", final_forward_power);
+                    printf("forw pow after noise fixing:    %d W \n", final_forward_power);
                     load_power = final_forward_power - final_reflected_power;
                     // DB25 updation
 
                     dac_set(DAC_forw_ref_pow_spi_fd, final_forward_power, final_reflected_power, load_power);
                     Prev_final_forward_power = final_forward_power;
-                    printf("forw pow in after dac:    %lf W \n", final_forward_power);
+                    printf("forw pow in after dac:    %d W \n", final_forward_power);
                     prev_pps_dac_value = pps_dac_value; // storing dac val
                     // stabilizing for +/- 3 watts
                     // Read_forward_power();
@@ -251,7 +251,7 @@ void Read_forward_power(void)
     forward_power = avg_value(EMB_spi_fd, FOR_POW);
     printf("raw forw %lf\n", forward_power);
     final_forward_power = calibrated_result(forward_power, FOR_POW);
-    printf("forw pow :    %lf W \n", final_forward_power);
+    printf("forw pow :    %d W \n", final_forward_power);
 }
 
 void Read_reflected_power(void)
@@ -259,7 +259,7 @@ void Read_reflected_power(void)
     reflected_power = avg_value(EMB_spi_fd, REF_POW);
     printf("raw ref %lf\n", reflected_power);
     final_reflected_power = calibrated_result(reflected_power, REF_POW);
-    printf("Ref pow:     %lf W\n", final_reflected_power);
+    printf("Ref pow:     %d W\n", final_reflected_power);
     printf("\n");
 }
 
