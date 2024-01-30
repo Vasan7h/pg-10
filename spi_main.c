@@ -313,7 +313,10 @@ int spi_main()
                     // IIR filter
                     if (prev_pps_dac_value == pps_dac_value)
                     {
-                        final_forward_power = (Prev_final_forward_power + final_forward_power) / 2;
+                       if  (final_forward_power == final_forward_power + 1)
+                       {
+                        final_forward_power =final_forward_power - 1;
+                       }
                         printf("filtering noise\n");
                     }
                     printf("forw pow after noise fixing:    %lf W \n", final_forward_power);
