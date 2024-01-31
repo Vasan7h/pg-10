@@ -151,24 +151,24 @@ int spi_main()
                         // storing previous error
                         // pps_dac_value_PID = (int16_t)(P_control + I_control + D_control); // casting double to int
                         printf(" PPS PID value: %d\n", pps_dac_value_PID);
-                        err_sign = ((((int32_t)(abs(error_cal))) / ((int32_t)error_cal)));
-                        if ((abs(error_cal) > (0.03 * pow_set_pt)) && (!offset_flag))
-                        {
-                            toler_set = 2; // changed from 1 to 2
-                            condition_check = (toler_set)*err_sign;
-                        }
-                        else
-                        {
-                            toler_set = 1; // changed from 1 to 2
-                            condition_check = (toler_set)*err_sign;
-                        }
+                    //     err_sign = ((((int32_t)(abs(error_cal))) / ((int32_t)error_cal)));
+                    //     if ((abs(error_cal) > (0.03 * pow_set_pt)) && (!offset_flag))
+                    //     {
+                    //         toler_set = 2; // changed from 1 to 2
+                    //         condition_check = (toler_set)*err_sign;
+                    //     }
+                    //     else
+                    //     {
+                    //         toler_set = 1; // changed from 1 to 2
+                    //         condition_check = (toler_set)*err_sign;
+                    //     }
 
-                        // adding offset to acheive desired power
-                        pps_dac_value = pps_dac_value + condition_check;
-                        pid_overflow_fix();
-                        // in order to create an overshoot
-                    }
-                    printf("dac val after const %d\n", pps_dac_value);
+                    //     // adding offset to acheive desired power
+                    //     pps_dac_value = pps_dac_value + condition_check;
+                    //     pid_overflow_fix();
+                    //     // in order to create an overshoot
+                    // }
+                    // printf("dac val after const %d\n", pps_dac_value);
                     // updating dac for pps
                     Volt_cur_forw_ref_load_Set(DAC_spi_fd, DAC_DA2_SEL_CMD, spi1_trx, pps_dac_value);
                     prev_pps_dac_value = pps_dac_value;
