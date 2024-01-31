@@ -127,10 +127,12 @@ int spi_main()
                 if (stable_loop_init_flag)
                 {
                     prev_pps_dac_value = 0;
+                    stable_loop_init_flag=0;
                 }
                 if ((error_cal < 100) && (error_cal > 50)) 
                 {
                     stay_max_DAC_flag = 1;
+                    count=0;
                 }
                 if (((abs(error_cal)) > (0.02 * pow_set_pt)) && (!ref_fault_flag))
                 {
@@ -144,13 +146,13 @@ int spi_main()
                     {
                         pps_dac_value = prev_pps_dac_value; //SOL 1
                         //pps_dac_value =0 ; //SOL 2
-                        /*pps_dac_value=0;   //SOL 3
+                        //pps_dac_value=0;   //SOL 3
                         if(count >= 2)
                         {
                         stay_max_DAC_flag = 0;
-                        pps_dac_value =dac_at_err_50_to_100;
+                        //pps_dac_value =dac_at_err_50_to_100;
                         }
-                        count++;*/
+                        count++;
                     }
                     else
                     {
@@ -267,7 +269,7 @@ int spi_main()
                     // printf("abserr %lf\n",abserr);
                     manual_absl_func();
                     printf("Err: %lf\n", error_cal);
-                    if ((int)error_cal <= (int)(0.02 * pow_set_pt))
+                    if ((int)error_cal <= (int)(0.02 * pow_set_pt))  //condn to start filtering
                     {
                         printf("abs_error %d\n", (abs(error_cal)));
                         stable_loop_init_flag = 1;
@@ -328,7 +330,7 @@ int spi_main()
                     // Read_forward_power();
                     // printf("forw pow in stable:    %lf W \n", final_forward_power);
 
-                    stable_loop_init_flag = 0;
+                    
                     // printf("forw pow in stable:    %lf W \n", final_forward_power);
                 }
                 printf("\n");
